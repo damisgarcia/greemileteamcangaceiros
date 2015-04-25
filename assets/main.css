@@ -1,3 +1,21 @@
+* {
+	font-family: Arial, Verdana, Helvetica, Sans-serif;
+}
+
 #mapa {
 	height: 300px;
+}
+
+#content {
+	width: 900px;
+	margin: 0 auto;
+}
+
+table {
+	width: 100%;
+}
+
+table tr, table td, table th {
+	border: 1px solid #ccc;
+	text-align: center;
 }
