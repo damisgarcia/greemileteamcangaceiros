@@ -48,7 +48,11 @@
 				jsonTimes.places.forEach(function (place) {
 					if (place.gym && place.gym.lat && place.gym.lng) {
 						var lat = parseFloat(place.gym.lat), lng = parseFloat(place.gym.lng);
-						L.marker([lat, lng]).addTo(map);
+						var marker = L.marker([lat, lng]);
+						var address = place.gym.address || "Sem endereço";
+						var description = place.gym.description || "Sem descrição";
+						marker.bindPopup("<b>" + address +"</b><br/>" + description);
+						marker.addTo(map);
 						latLngs.push([lat, lng]);
 					}
 				});
