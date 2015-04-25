@@ -33,7 +33,7 @@
 				linha.appendChild(celulaData);
 
 				linha.setAttribute("data-id", times[i].id);
-				linha.onclick = exibeMarkersDoTime
+				linha.addEventListener("click", exibeMarkersDoTime);
 
 				tabela.appendChild(linha);
 		    }
