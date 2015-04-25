@@ -8,18 +8,8 @@
 		}).addTo(map);
 
 		function atualizaTabela() {
-			var xmlhttp = new XMLHttpRequest();
 
-			var url = "http://www.jiujitsuteam.com";
-
-			xmlhttp.onreadystatechange = function() {
-	    		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-		        	var myArr = JSON.parse(xmlhttp.responseText);
-		        	parseJson(myArr);
-	    		}
-			}
-			xmlhttp.open("GET", url + "/teams.json", true);
-			xmlhttp.send();
+			JiuJitsuJsonpRequests.getEscolas(parseJson);
 		}
 
 		function parseJson(times) {
@@ -34,9 +24,9 @@
 				var celulaNickname = document.createElement("td");
 				var celulaData = document.createElement("td");
 
-				celulaNome.innerText = times[i].name;
-				celulaNickname.innerText = times[i].nickname;
-				celulaData.innerText = new Date(times[i].created_at).toLocaleDateString();
+				celulaNome.textContent = times[i].name;
+				celulaNickname.textContent = times[i].nickname;
+				celulaData.textContent = new Date(times[i].created_at).toLocaleDateString();
 
 				linha.appendChild(celulaNome);
 				linha.appendChild(celulaNickname);
@@ -52,7 +42,7 @@
 		function exibeMarkersDoTime() {
 			var id = this.getAttribute("data-id");
 
-			getEscola(id, function (jsonTimes) {
+			JiuJitsuJsonpRequests.getEscola(id, function (jsonTimes) {
 				var latLngs = [];
 
 				jsonTimes.places.forEach(function (place) {
