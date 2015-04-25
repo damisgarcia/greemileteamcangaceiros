@@ -22,3 +22,8 @@ table tr, table td, table th {
 .linha-time {
 	cursor: pointer;
 }
+
+#scrollTable {
+	max-height: 100px;
+	overflow-y: auto;
+}
