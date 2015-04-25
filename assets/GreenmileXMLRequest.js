@@ -10,7 +10,7 @@ function getEscolas(callback){
   xmlhttp.onreadystatechange = function() {
       if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
           var myArr = JSON.parse(xmlhttp.responseText);
-          if callback != null || callback != undefined
+          if (callback != null || callback != undefined)
             callback(myArr)
       }
   }
@@ -25,7 +25,7 @@ function getEscola(id,callback){
   xmlhttp.onreadystatechange = function() {
       if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
           var myArr = JSON.parse(xmlhttp.responseText);
-          if callback != null || callback != undefined
+          if (callback != null || callback != undefined)
             callback(myArr)
       }
   }
