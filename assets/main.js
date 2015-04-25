@@ -67,7 +67,7 @@
 					var bounds = new L.LatLngBounds(latLngs);
 					map.fitBounds(bounds);
 				}
-			})
+			});
 		}
 
 		atualizaTabela();
