@@ -8,19 +8,17 @@
 <body>
 	<div id="content">
 		<div id="mapa"></div>
-
-		<table id="times">
-			<thead>
-				<tr>
-					<th>Nome</th>
-					<th>Nickname</th>
-					<th>Data</th>
-				</tr>
-			</thead>
-			<tbody id="tabela">
-			</tbody>
-		</table>
-	</div>
+	<table>
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>Nickname</th>
+				<th>Data</th>
+			</tr>
+		</thead>
+		<tbody id="tabela">
+		</tbody>
+	</table>
 	<script src="assets/vendor/leaflet.js" type="text/javascript"></script>
 	<script src="assets/main.js" type="text/javascript"></script>
 	<script src="assets/load.js" type="text/javascript"></script>
@@ -49,17 +47,74 @@
 			xmlhttp.send();
 		}
 
-		function parseJson(arr) {
-		    var out = "";
-		    var i;
-		    for(i = 0; i < arr.length; i++) {
-		        out += '<tr><td>' + arr[i].name + "</td><td>" + 
-		        arr[i].nickname + '</td><td>' + new Date(arr[i].created_at).toLocaleDateString() +'</td></tr>';
+		function parseJson(times) {
+			var tabela = document.getElementById("tabela");
+
+		    for(var i = 0; i < times.length; i++) {
+
+				var linha = document.createElement("tr");
+				linha.className = "linha-time";
+
+				var celulaNome = document.createElement("td");
+				var celulaNickname = document.createElement("td");
+				var celulaData = document.createElement("td");
+
+				celulaNome.innerText = times[i].name;
+				celulaNickname.innerText = times[i].nickname;
+				celulaData.innerText = new Date(times[i].created_at).toLocaleDateString();
+
+				linha.appendChild(celulaNome);
+				linha.appendChild(celulaNickname);
+				linha.appendChild(celulaData);
+
+				linha.setAttribute("data-id", times[i].id);
+				linha.onclick = exibeMarkersDoTime
+
+				tabela.appendChild(linha);
 		    }
-		    document.getElementById("tabela").innerHTML = out;
+		}
+
+		function exibeMarkersDoTime() {
+			var id = this.getAttribute("data-id");
+
+			buscaMarkers(id, function (jsonTimes) {
+				var latLngs = [];
+
+				jsonTimes.places.forEach(function (place) {
+					if (place.gym && place.gym.lat && place.gym.lng) {
+						var lat = parseFloat(place.gym.lat), lng = parseFloat(place.gym.lng);
+						L.marker([lat, lng]).addTo(map);
+						latLngs.push([lat, lng]);
+					}
+				});
+
+				if (latLngs.length > 0) {
+					var bounds = new L.LatLngBounds(latLngs);
+					map.fitBounds(bounds);
+				}
+			})
+		}
+
+		function buscaMarkers(idTime, callback) {
+			
+			var xmlhttp = new XMLHttpRequest();
+
+			var url = "http://www.jiujitsuteam.com";
+
+			xmlhttp.onreadystatechange = function() {
+	    		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		        	var myArr = JSON.parse(xmlhttp.responseText);
+		        	callback(myArr);
+	    		}
+			}
+
+			xmlhttp.open("GET", url + "/teams/" + idTime + ".json", true);
+			xmlhttp.send();
 		}
 
 		atualizaTabela();
+
+
 	})();
 	</script>
 </body>
