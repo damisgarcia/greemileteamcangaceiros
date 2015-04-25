@@ -1,3 +1,7 @@
 #mapa {
 	height: 300px;
 }
+
+.linha-time {
+	cursor: pointer;
+}
