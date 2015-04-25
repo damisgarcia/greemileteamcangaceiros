@@ -9,38 +9,43 @@
 	<div id="mapa">
 	</div>
 
-	<table>
+	<table id="times">
 		<thead>
 			<tr>
 				<th>Nome</th>
 				<th>Nickname</th>
 				<th>Data</th>
-				<th>Logo</th>
 			</tr>
 		</thead>
 		<tbody id="tabela">
 		</tbody>
 	</table>
 	<script src="assets/vendor/leaflet.js" type="text/javascript"></script>
+	<script src="assets/main.js" type="text/javascript"></script>
 	<script type="text/javascript">
+	(function () {
+		"use strict"
+
 		var map = L.map('mapa').setView([51.505, -0.09], 13);
 		
 		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 		    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
-		var xmlhttp = new XMLHttpRequest();
+		function atualizaTabela() {
+			var xmlhttp = new XMLHttpRequest();
 
-		var url = "http://www.jiujitsuteam.com";
+			var url = "http://www.jiujitsuteam.com";
 
-		xmlhttp.onreadystatechange = function() {
-    		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-	        	var myArr = JSON.parse(xmlhttp.responseText);
-	        	parseJson(myArr);
-    		}
+			xmlhttp.onreadystatechange = function() {
+	    		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		        	var myArr = JSON.parse(xmlhttp.responseText);
+		        	parseJson(myArr);
+	    		}
+			}
+			xmlhttp.open("GET", url + "/teams.json", true);
+			xmlhttp.send();
 		}
-		xmlhttp.open("GET", url + "/teams.json", true);
-		xmlhttp.send();
 
 		function parseJson(arr) {
 		    var out = "";
@@ -51,6 +56,9 @@
 		    }
 		    document.getElementById("tabela").innerHTML = out;
 		}
+
+		atualizaTabela();
+	})();
 	</script>
 </body>
 </html>
